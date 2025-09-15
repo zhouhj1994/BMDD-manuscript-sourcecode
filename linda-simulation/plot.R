@@ -46,55 +46,6 @@ plot.fdr.fun <- function(output){
 }
 
 
-plot.power.fun <- function(output){
-  l <- nrow(output) /  2
-  means <- output[1 : l, ]
-  errors <- output[(l + 1) : (2 * l), ]
-  rownames(means) <- c("LinDA", "LinDA-BMDD", "LinDA-SAVER")
-  colnames(means) <- c("m=50;n=50", "m=200;n=50", "m=500;n=50",
-                       "m=50;n=200", "m=200;n=200", "m=500;n=200")
-  bar_positions <- barplot(means, beside = TRUE,  
-                           col = c("lightgrey", "lightcoral", "lightblue"),
-                           xlab = 'True Positive Rate',
-                           horiz = TRUE,
-                           xlim = c(0, max(means + errors) + 0.1),
-                           yaxt = "n",
-                           cex.axis = 1.2, cex.lab = 1.2)
-  
-  for (i in 1:nrow(means)) {
-    arrows(means[i, ] - 1.96*errors[i, ], 
-           bar_positions[i, ], 
-           means[i, ] + 1.96*errors[i, ], 
-           bar_positions[i, ], 
-           angle = 90, 
-           code = 3, 
-           length = 0.1)
-  }
-  
-  legend("bottomright", legend = rownames(means), 
-         fill = c("lightgrey", "lightcoral", "lightblue"), 
-         cex = 1.2,  # Adjust text size
-         bty = "n",  # No box around the legend
-         inset = c(-0.02, 0.02)) # Horizontal, vertical movement
-}
-
-combine.fun <- function(setup, output) {
-  pdf(paste0(setup, '_barplot.pdf'), width = 11, height = 8)
-  par(mfrow = c(1, 2))
-  par(mar = c(5, 4, 4-2, 2-1) + 0.1)
-  plot.fdr.fun(output[c(1 : 3 , 7 : 9), ])
-  par(mar = c(5, 4-3, 4-2, 2) + 0.1)
-  plot.power.fun(output[c(4 : 6 , 10 : 12), ])
-  dev.off()
-}
-
-setup <- 'S1'
-output <- output1
-combine.fun(setup, output)
-
-
-
-
 plot.power.fun <- function(output, s){
   l <- nrow(output) /  2
   means <- output[1 : l, ]
@@ -120,14 +71,21 @@ plot.power.fun <- function(output, s){
            length = 0.1)
   }
   
-  if (s == 2) {
+  if (s == 1) {
+    legend("bottomright", legend = rownames(means), 
+           fill = c("lightgrey", "lightcoral", "lightblue"), 
+           cex = 1.2,  
+           bty = "n",  
+           inset = c(-0.02, 0.02)) 
+  } else if (s == 2) {
     legend("right", legend = rownames(means), 
            fill = c("lightgrey", "lightcoral", "lightblue"), 
-           cex = 1.2,  # Adjust text size
-           bty = "n",  # No box around the legend
-           inset = c(-0.4, -0.4), # Horizontal, vertical movement
-           xpd = TRUE) 
+           cex = 1.2,  
+           bty = "n",  
+           inset = c(-0.4, -0.4), 
+           xpd = TRUE)
   }
+
 }
 
 combine.fun <- function(setup, output, s) {
@@ -148,6 +106,9 @@ combine.fun <- function(setup, output, s) {
   dev.off()
 }
 
+setup <- 'S1'
+output <- output1
+combine.fun(setup, output, 1)
 
 setup <- 'S2'
 output <- output2
