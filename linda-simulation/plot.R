@@ -92,22 +92,9 @@ setup <- 'S1'
 output <- output1
 combine.fun(setup, output)
 
-setup <- 'S2'
-output <- output2
-combine.fun(setup, output)
-
-setup <- 'S3'
-output <- output3
-combine.fun(setup, output)
-
-setup <- 'S4'
-output <- output4
-combine.fun(setup, output)
 
 
 
-
-########################################
 plot.power.fun <- function(output, s){
   l <- nrow(output) /  2
   means <- output[1 : l, ]
@@ -133,7 +120,7 @@ plot.power.fun <- function(output, s){
            length = 0.1)
   }
   
-  if (s == 4) {
+  if (s == 2) {
     legend("right", legend = rownames(means), 
            fill = c("lightgrey", "lightcoral", "lightblue"), 
            cex = 1.2,  # Adjust text size
@@ -141,19 +128,18 @@ plot.power.fun <- function(output, s){
            inset = c(-0.4, -0.4), # Horizontal, vertical movement
            xpd = TRUE) 
   }
-
 }
 
 combine.fun <- function(setup, output, s) {
-  if(s == 4) {
-    pdf(paste0(setup, '_barplot_2.pdf'), width = 13, height = 8)
+  if(s == 2) {
+    pdf(paste0(setup, '_barplot.pdf'), width = 13, height = 9)
   } else {
-    pdf(paste0(setup, '_barplot_2.pdf'), width = 11, height = 8)
+    pdf(paste0(setup, '_barplot.pdf'), width = 11, height = 8)
   }
   par(mfrow = c(1, 2))
   par(mar = c(5, 4, 4-2, 2-1) + 0.1)
   plot.fdr.fun(output[c(1 : 3 , 7 : 9), ])
-  if(s == 4) {
+  if(s == 2) {
     par(mar = c(5, 4-3, 4-2, 10) + 0.1)
   } else {
     par(mar = c(5, 4-3, 4-2, 2) + 0.1)
@@ -174,6 +160,8 @@ combine.fun(setup, output, 3)
 setup <- 'S4'
 output <- output4
 combine.fun(setup, output, 4)
+
+
 
 
 
